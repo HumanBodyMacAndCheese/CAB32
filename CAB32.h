@@ -59,7 +59,7 @@ typedef union CABBlock {
 
 } CABBlock;
 
-static cab_hash_t CAB32_mixer(union CABBlock* a, uint32_t seed) {		// This is the part where the name came from 
+static inline cab_hash_t CAB32_mixer(union CABBlock* a, uint32_t seed) {		// This is the part where the name came from 
 	cab_hash_t out = seed + ((a->split[1] << 4) ^ (a->split[0] << 2));		// This section here is endian-dependent. Use with caution unless hashes across systems don't need to match 
 	out += CAB_MIXER_C;
 	out ^= out << 16;
