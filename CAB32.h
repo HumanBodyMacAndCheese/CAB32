@@ -46,16 +46,16 @@ extern "C" {
 Exact reasoning for picking these primes is unknown 
 
 */
-#define CAB_PRIME (hash_t)2576980349
-#define CAB_MIXER_A (hash_t)1000000439
-#define CAB_MIXER_B (hash_t)2500001401
-#define CAB_MIXER_C (hash_t)1500001387
-#define CAB_MIXER_D (hash_t)3000001259
+#define CAB_PRIME (cab_hash_t)2576980349
+#define CAB_MIXER_A (cab_hash_t)1000000439
+#define CAB_MIXER_B (cab_hash_t)2500001401
+#define CAB_MIXER_C (cab_hash_t)1500001387
+#define CAB_MIXER_D (cab_hash_t)3000001259
 
 typedef union CABBlock {
 	uint64_t integer;
-	uint8_t bytearray[BLOCK_SIZE];
-	uint32_t split[BLOCK_SIZE / sizeof(uint32_t)];
+	uint8_t bytearray[CAB_BLOCK_SIZE];
+	uint32_t split[CAB_BLOCK_SIZE / sizeof(uint32_t)];
 
 } CABBlock;
 
@@ -74,13 +74,13 @@ static inline cab_hash_t CAB32_mixer(union CABBlock* a, uint32_t seed) {		// Thi
 cab_hash_t CAB32_1(const void* data, const size_t size, const uint32_t seed) { 
 	cab_hash_t hash = CAB_PRIME;
 	
-	size_t max = size / BLOCK_SIZE;
+	size_t max = size / CAB_BLOCK_SIZE;
 	size_t i = 0;
 
 	// Main hashing loop
 	for (i = 0; i < max; i++) {
 		union CABBlock obj;
-		memcpy(&obj.integer, (const uint8_t *)data + i * BLOCK_SIZE, sizeof(uint64_t));
+		memcpy(&obj.integer, (const uint8_t *)data + i * CAB_BLOCK_SIZE, sizeof(uint64_t));
 
 		hash += CAB32_mixer(&obj, seed); 
 		hash ^= CAB_MIXER_A;
@@ -90,11 +90,11 @@ cab_hash_t CAB32_1(const void* data, const size_t size, const uint32_t seed) {
 	}
 
 	// Handle any remaining data
-	for (i = i * BLOCK_SIZE; i < size; i++) {
+	for (i = i * CAB_BLOCK_SIZE; i < size; i++) {
 		const uint8_t BYTE = *((const uint8_t*)data + i);
 		hash += CAB_MIXER_B;
 		hash += CAB_MIXER_C;
-		hash += (hash_t)BYTE;
+		hash += (cab_hash_t)BYTE;
 
 	}
 
@@ -117,7 +117,7 @@ cab_hash_t CAB32_1(const void* data, const size_t size, const uint32_t seed) {
 TO-DO: Write an even faster version that processes 16/32/64 bytes of input in the future
 
 */
-hash_t CAB32_2 (const void* data, const size_t size, const uint32_t seed);
+cab_hash_t CAB32_2 (const void* data, const size_t size, const uint32_t seed);
 
 #ifdef __cplusplus
 }
