@@ -91,7 +91,7 @@ cab_hash_t CAB32_1(const void* data, const size_t size, const uint32_t seed) {
 
 	// Handle any remaining data
 	for (i = i * CAB_BLOCK_SIZE; i < size; i++) {
-		const uint8_t BYTE = *((const uint8_t*)data + i);
+		const uint8_t BYTE = (const uint8_t*)data[i];
 		hash += CAB_MIXER_B;
 		hash += CAB_MIXER_C;
 		hash += (cab_hash_t)BYTE;
