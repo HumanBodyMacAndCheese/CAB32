@@ -60,13 +60,13 @@ typedef union CABBlock {
 } CABBlock;
 
 static inline cab_hash_t CAB32_mixer(union CABBlock* a, uint32_t seed) {		// This is the part where the name came from 
-	cab_hash_t out = seed + ((a->split[1] << 4) ^ (a->split[0] << 2));		// This section here is endian-dependent. Use with caution unless hashes across systems don't need to match 
+	cab_hash_t out = seed ^ (a->split[1] ^ a->split[0]);		// This section here is endian-dependent. Use with caution unless hashes across systems don't need to match 
 	out += CAB_MIXER_C;
 	out ^= out << 16;
 	out += CAB_MIXER_A;
 	out ^= out >> 12;
 	out += CAB_MIXER_B;
-	return ~out;
+	return out;
 
 }
 
@@ -81,32 +81,34 @@ cab_hash_t CAB32_1(const void* data, const size_t size, const uint32_t seed) {
 	for (i = 0; i < max; i++) {
 		union CABBlock obj;
 		memcpy(&obj.integer, (const uint8_t *)data + i * CAB_BLOCK_SIZE, sizeof(uint64_t));
-
-		hash += CAB32_mixer(&obj, seed); 
-		hash ^= CAB_MIXER_A;
-		hash ^= hash << 4;
-		hash ^= CAB_MIXER_B; 
 		
+		hash ^= CAB32_mixer(&obj, seed); 
+		hash ^= hash >> 24;
+		hash += CAB_MIXER_A;
+		 
 	}
 
 	// Handle any remaining data
 	for (i = i * CAB_BLOCK_SIZE; i < size; i++) {
-		const uint8_t BYTE = ((const uint8_t*)data)[i];
+		const uint8_t BYTE = *((const uint8_t*)data + i);
+		hash ^= hash << 12;
 		hash += CAB_MIXER_B;
 		hash += CAB_MIXER_C;
+		hash ^= hash >> 16;
 		hash += (cab_hash_t)BYTE;
+		
 
 	}
 
 	// Finalize
 	hash ^= hash >> 12;
-	hash += CAB_MIXER_C;
+	hash *= CAB_MIXER_C;		// No multiplications in loops since they slow down performance 
 	hash ^= seed;
-	hash += CAB_MIXER_A;
-	hash ^= hash << 16;
-	hash *= CAB_MIXER_B;		// No multiplications in loops since they slow down performance 
-	hash ^= hash << 8;
-	hash *= CAB_MIXER_D;		// Multiplications are used sparingly to avoid bad performance with small strings 
+	hash *= CAB_MIXER_A;		// Multiplications are used sparingly to avoid bad performance with small strings 
+	hash ^= hash << 24;
+	hash *= CAB_MIXER_B;
+	hash ^= hash >> 16;
+	hash *= CAB_MIXER_D;
 
 	return hash;
 
