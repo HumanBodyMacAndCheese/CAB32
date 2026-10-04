@@ -1,0 +1,34 @@
+* Tested against a table of N buckets with a 60% load factor per script
+* The number of elements tested are in the "total hashes" section
+* Seed used for both hash functions was 1234567890 
+* Dataset was unsigned, 64-bit integers from 0 to int(N * 0.60)
+
+python3 hashes4096.py
+CAB32_1 total hashes: 2457
+CAB32_1 unique hashes: 1843
+MurmurHash3 total hashes: 2457
+MurmurHash3 unique hashes: 1841
+
+python3 hashes1024.py
+CAB32_1 total hashes: 614
+CAB32_1 unique hashes: 472
+MurmurHash3 total hashes: 614
+MurmurHash3 unique hashes: 435
+
+python3 hashes128.py
+CAB32_1 total hashes: 76
+CAB32_1 unique hashes: 59
+MurmurHash3 total hashes: 76
+MurmurHash3 unique hashes: 58
+
+python3 hashes32.py
+CAB32_1 total hashes: 19
+CAB32_1 unique hashes: 14
+MurmurHash3 total hashes: 19
+MurmurHash3 unique hashes: 12
+
+python3 hashes16.py
+CAB32_1 total hashes: 9
+CAB32_1 unique hashes: 9
+MurmurHash3 total hashes: 9
+MurmurHash3 unique hashes: 6
