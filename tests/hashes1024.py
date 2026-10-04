@@ -1,7 +1,7 @@
 """
 
 * Tested against a table of 1024 buckets with a 60% load factor
-* The number of elements tested was 614
+* The number of elements tested was 614, 64-bit, sequential integers 
 * Seed used for both hash functions was 1234567890 
 
 Output:
