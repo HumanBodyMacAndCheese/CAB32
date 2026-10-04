@@ -7,3 +7,4 @@
 * Hashes are 32-bits long, great for embedded systems
 * Public domain under Unlicense, no royalties, no cost, no need to even include the license
 * Just like the hash itself, the Unlicense also applies to everything in this repository 
+* tl;dr everything here is Public Domain
