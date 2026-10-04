@@ -1,7 +1,9 @@
 """
 
+* Paired with file "distribution.c" 
 * Tested with 1000 elements against 2048 unique buckets
 * String length ranged from 8 to 1024 characters 
+* Seed used for both hashes was 4255533767
 
 CAB32_1 unique hashes: 791
 MurmurHash3 unique hashes: 801
