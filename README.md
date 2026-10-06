@@ -8,3 +8,6 @@
 * Public domain under Unlicense, no royalties, no cost, no need to even include the license
 * Just like the hash itself, the Unlicense also applies to everything in this repository 
 * tl;dr everything here is Public Domain
+
+# LLM Usage
+No AI models were used in this repository except to generate a list of sequential strings in `tests/sequentialstrings.c`. Everything else here is 100% human.
