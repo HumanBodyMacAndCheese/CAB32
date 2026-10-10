@@ -3,11 +3,13 @@
 * Just like the hash itself, the Unlicense also applies to everything in this repository 
 * tl;dr everything here is Public Domain
 
-# TBN and TBA djb2-like hash
+# dispersalhash1
 * Self contained in a single C header file
-* Slight performance edge over djb2
+* Slight performance edge over djb2 with a finalizer to help with distribution 
+* Allows for usage of a random seed for security
 * Functional with any unsigned integer of at least 16 bits
-* ANSI C89 for maximum portability 
+* ANSI C89 for maximum portability
+* Not a feature, but the name parodies seed dispersal since it uses a seed and disperses bits with bit shifts 
 
 # CAB32 Family of Hash Functions
 * Self-contained in a single C header file 
